@@ -1,10 +1,12 @@
 from flask import Flask, request
 from http import HTTPStatus
+from flask_cors import CORS
 
 from models.todo_list import TodoList
 from models.todo import Todo
 
 app = Flask(__name__)
+CORS(app)
 
 todo_list = TodoList()
 
