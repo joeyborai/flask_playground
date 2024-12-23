@@ -1,9 +1,11 @@
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
 const API_URL = 'http://localhost:5000';
 
-export default function TodoList({ todos }) {
+export default function TodoListComponent({ todos }) {
   const queryClient = useQueryClient();
 
   const toggleTodoMutation = useMutation({
@@ -17,13 +19,10 @@ export default function TodoList({ todos }) {
   });
 
   return (
-    <ul className="space-y-4">
+    <TodoList>
       {todos?.map((todo) => (
-        <li
-          key={todo.id}
-          className="flex items-start gap-2 p-4 border rounded"
-        >
-          <input
+        <TodoItem key={todo.id}>
+          <TodoCheckbox
             type="checkbox"
             checked={todo.completed}
             onChange={() =>
@@ -32,20 +31,58 @@ export default function TodoList({ todos }) {
                 completed: !todo.completed,
               })
             }
-            className="mt-1"
           />
-          <div>
-            <h3
-              className={`font-medium ${
-                todo.completed ? 'line-through text-gray-500' : ''
-              }`}
-            >
-              {todo.title}
-            </h3>
-            <p className="text-gray-600 text-sm">{todo.description}</p>
-          </div>
-        </li>
+          <TodoContent>
+            <TodoTitle completed={todo.completed}>{todo.title}</TodoTitle>
+            <TodoDescription>{todo.description}</TodoDescription>
+          </TodoContent>
+        </TodoItem>
       ))}
-    </ul>
+    </TodoList>
   );
-} 
+}
+
+TodoListComponent.propTypes = {
+  todos: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+      completed: PropTypes.bool.isRequired,
+    })
+  ).isRequired,
+};
+
+const TodoList = styled.ul`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const TodoItem = styled.li`
+  display: flex;
+  align-items: start;
+  gap: 0.5rem;
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.375rem;
+`;
+
+const TodoCheckbox = styled.input`
+  margin-top: 0.25rem;
+`;
+
+const TodoContent = styled.div`
+  flex: 1;
+`;
+
+const TodoTitle = styled.h3`
+  font-weight: 500;
+  text-decoration: ${props => props.completed ? 'line-through' : 'none'};
+  color: ${props => props.completed ? '#6b7280' : 'inherit'};
+`;
+
+const TodoDescription = styled.p`
+  font-size: 0.875rem;
+  color: #6b7280;
+`; 

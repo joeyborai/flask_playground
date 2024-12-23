@@ -1,3 +1,4 @@
+import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import TodoListHeader from '../components/TodoListHeader';
@@ -15,13 +16,26 @@ export default function TodoListPage() {
     },
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingText>Loading...</LoadingText>;
 
   return (
-    <div className="max-w-3xl mx-auto p-4">
+    <PageContainer>
       <TodoListHeader />
       <NewTodo />
       <TodoList todos={todos} />
-    </div>
+    </PageContainer>
   );
-} 
+}
+
+const PageContainer = styled.div`
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 1rem;
+`;
+
+const LoadingText = styled.div`
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.125rem;
+  color: #6b7280;
+`; 

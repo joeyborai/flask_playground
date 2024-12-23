@@ -1,10 +1,11 @@
 import { useState } from 'react';
+import styled from 'styled-components';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
 const API_URL = 'http://localhost:5000';
 
-export default function NewTodo() {
+export default function NewTodoComponent() {
   const queryClient = useQueryClient();
   const [newTodoTitle, setNewTodoTitle] = useState('');
   const [newTodoDescription, setNewTodoDescription] = useState('');
@@ -30,29 +31,52 @@ export default function NewTodo() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mb-8">
-      <div className="flex gap-2">
-        <input
+    <NewTodoForm onSubmit={handleSubmit}>
+      <InputContainer>
+        <TodoInput
           type="text"
           value={newTodoTitle}
           onChange={(e) => setNewTodoTitle(e.target.value)}
           placeholder="Todo title"
-          className="border p-2 rounded flex-1"
         />
-        <input
+        <TodoInput
           type="text"
           value={newTodoDescription}
           onChange={(e) => setNewTodoDescription(e.target.value)}
           placeholder="Todo description"
-          className="border p-2 rounded flex-1"
         />
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
+        <AddButton type="submit">
           Add Todo
-        </button>
-      </div>
-    </form>
+        </AddButton>
+      </InputContainer>
+    </NewTodoForm>
   );
-} 
+}
+
+const NewTodoForm = styled.form`
+  margin-bottom: 2rem;
+`;
+
+const InputContainer = styled.div`
+  display: flex;
+  gap: 0.5rem;
+`;
+
+const TodoInput = styled.input`
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.375rem;
+`;
+
+const AddButton = styled.button`
+  background-color: #3b82f6;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: #2563eb;
+  }
+`; 

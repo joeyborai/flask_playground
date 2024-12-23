@@ -1,7 +1,19 @@
-export default function TodoListHeader() {
+import styled from 'styled-components';
+
+export default function TodoListHeaderComponent() {
   return (
-    <header className="text-center mb-8">
-      <h1 className="text-3xl font-bold">Todo List</h1>
-    </header>
+    <Header>
+      <Title>Todo List</Title>
+    </Header>
   );
-} 
+}
+
+const Header = styled.header`
+  text-align: center;
+  margin-bottom: 2rem;
+`;
+
+const Title = styled.h1`
+  font-size: 1.875rem;
+  font-weight: bold;
+`; 
