@@ -17,6 +17,8 @@ class TodoList:
         self.head = None
         self.tail = None
 
+        self.current_id = 1
+
     def _remove_node_from_dll(self, node: TodoNode):
         if node.prev:
             node.prev.next = node.next
@@ -27,7 +29,13 @@ class TodoList:
         else:
             self.tail = node.prev
 
+    def get_next_id(self) -> int:
+        return self.current_id
+
     def add_todo(self, todo: Todo):
+        if todo.id in self.todo_map:
+            raise ValueError("Todo ID already exists")
+
         new_node = TodoNode(todo)
         self.todo_map[todo.id] = new_node
 
@@ -38,6 +46,8 @@ class TodoList:
             new_node.prev = self.tail
             self.tail.next = new_node
             self.tail = new_node
+
+        self.current_id += 1
 
     def get_todo(self, id: int):
         node = self.todo_map.get(id)
